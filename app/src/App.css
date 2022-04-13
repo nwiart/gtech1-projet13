@@ -36,3 +36,28 @@
     transform: rotate(360deg);
   }
 }
+
+
+
+body {
+	background: #e78c8c;
+}
+
+header {
+	width: 100%;
+	height: 166px;
+
+	position: sticky;
+	top: 0;
+	background: white;
+}
+
+header .categories {
+	position: absolute;
+	top: 96px;
+	height: 70px;
+
+	display: block;
+	width: 100%;
+	background: #083b66;
+}
