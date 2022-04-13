@@ -61,3 +61,20 @@ header .categories {
 	width: 100%;
 	background: #083b66;
 }
+
+form {
+	text-align: center;
+}
+
+button {
+	background: #083b66;
+	color: white;
+
+	text-transform: uppercase;
+
+	border-radius: 128px;
+	border: none;
+	padding: 0.5em 1em;
+
+	font-family: "Segoe UI Light";
+}
