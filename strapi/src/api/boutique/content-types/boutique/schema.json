@@ -1,0 +1,53 @@
+{
+  "kind": "collectionType",
+  "collectionName": "boutiques",
+  "info": {
+    "singularName": "boutique",
+    "pluralName": "boutiques",
+    "displayName": "Boutiques",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Baniere": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "Presentation": {
+      "type": "text"
+    },
+    "leins": {
+      "type": "richtext"
+    },
+    "image": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "Name": {
+      "type": "string"
+    },
+    "produits": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::produit.produit",
+      "mappedBy": "boutique"
+    }
+  }
+}

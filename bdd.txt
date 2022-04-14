@@ -1,0 +1,35 @@
+Carousel Image :
+- Image
+
+Product :
+- Categories
+
+Category :
+- Name
+
+User :
+- firstName
+- lastName
+- email
+- password
+- isArtisan
+
+Shop :
+- Name
+- Domain
+
+---
+
+Page accueil :
+
+- Logo centré L'Artisan
+- Carousel
+
+- Paragraphe de bienvenue
+
+- Découvrez les produits de nos régions
+
+- Nos recommandations :
+  - Image
+  - Titre
+  - Carousel??

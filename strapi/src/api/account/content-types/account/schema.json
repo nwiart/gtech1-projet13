@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "accounts",
+  "info": {
+    "singularName": "account",
+    "pluralName": "accounts",
+    "displayName": "Account",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "firstName": {
+      "type": "string",
+      "required": true
+    },
+    "lastName": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "unique": true
+    },
+    "password": {
+      "type": "password",
+      "required": true,
+      "minLength": 6
+    },
+    "isArtisan": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "phoneNumber": {
+      "type": "string",
+      "unique": false
+    }
+  }
+}
