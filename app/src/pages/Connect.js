@@ -7,6 +7,8 @@ import Tabs from "../components/Tabs";
 
 import $ from 'jquery';
 
+import UserApi from '../api/UserApi';
+
 class Connect extends React.Component {
 
 	constructor(props) {
@@ -23,17 +25,8 @@ class Connect extends React.Component {
 	}
 
 	async login() {
-		let request = {
-			method: "GET",
-			headers: {
-				"Accept": "application/json",
-				"Content-Type": "application/json"
-			}
-		};
 
-		// Retrieve the corresponding user from the database.
-		let response = await fetch("http://localhost:1337/api/accounts?filters[email][$eq]=" + this.state.email, request)
-		let json = await response.json();
+		let json = await UserApi.getUser( { email: this.state.email, password: this.state.password } );
 
 		// If it's empty, this means no matching user was found.
 		if (json.data.length != 1) {
@@ -47,6 +40,20 @@ class Connect extends React.Component {
 	// Register a new user in the database.
 	// User data is retrieved from "this.state".
 	async register() {
+
+		// Password is not long enough.
+		if (this.state.password.length < 6) {
+			$("#sign-up-error").css("display", "inline").html("Votre mot de passe doit au moins faire 6 caractères.");
+			return;
+		}
+
+		// Password and confirm do not match.
+		if (this.state.password != this.state.passwordConfirm) {
+			$("#sign-up-error").css("display", "inline").html("Les mots de passe ne correspondent pas.");
+			return;
+		}
+
+		// Make the request!
 		let obj = {
 			data: {
 				firstName: this.state.firstName,
@@ -122,7 +129,7 @@ class Connect extends React.Component {
 
 						{ /* Sign up tab. */ }
 						<div className="tab" id="sign-up">
-							<p className="text-danger">L'email ou le numéro de téléphone est déjà utilisé.</p>
+							<p className="text-danger" id="sign-up-error">L'email ou le numéro de téléphone est déjà utilisé.</p>
 							<Form onSubmit={ (event) => this.onRegisterSubmit(event) }>
 								<Form.Group controlId="lastName">
 									<Form.Label>Nom*</Form.Label>
@@ -160,7 +167,7 @@ class Connect extends React.Component {
 								</Form.Group>
 
 								<Form.Group controlId="accept">
-									<Form.Check label="J'accepte les Conditions Générales d'Utilisation et reconnais avoir été informé que mes données personnelles seront utilisées tel que décrit et détaillé dans la Politique de protection des données personnelles*" />
+									<Form.Check id="accept" required label="J'accepte les Conditions Générales d'Utilisation et reconnais avoir été informé que mes données personnelles seront utilisées tel que décrit et détaillé dans la Politique de protection des données personnelles*" />
 								</Form.Group>
 
 								<div className="text-center"><button type="submit">Je m'inscris</button></div>
