@@ -7,6 +7,10 @@ import Header from "../components/Header";
 import star from '../img/star.png';
 import star_half from '../img/star_half.png';
 import star_empty from '../img/star_empty.png';
+import ProductCard from "../components/ProductCard";
+
+import background_top from '../img/product_background_top.png';
+import background_bottom from '../img/product_background_bottom.png';
 
 
 class Product extends React.Component {
@@ -67,7 +71,7 @@ class Product extends React.Component {
 				product: product,
 				shop: shop
 			} );
-		}, 2000 );
+		}, 500 );
 	}
 
 	render() {
@@ -107,13 +111,23 @@ class Product extends React.Component {
 			<>
 				<Header />
 
-				<Container style={{ background: "white" }}>
+				<Container style={{ background: "white", padding: "12px" }}>
 					<Row>
 						<Col xs={6}>
-							
+							<img className="img-fluid" src={"http://localhost:1337" + this.state.product.pictures.data[0].attributes.url} />
+
+							<Product.Panel>
+								<h2>Caractéristiques</h2>
+								<p>
+									Poids : <br/>
+									Région : <br/>
+									Département : <br/>
+									Ville :
+								</p>
+							</Product.Panel>
 						</Col>
 
-						<Col xs={6}>
+						<Col xs={6} className="d-flex">
 							<Product.Panel>
 								{ /* Product name, notation, description and price. */ }
 								<h2>{this.state.product.name}</h2>
@@ -150,6 +164,26 @@ class Product extends React.Component {
 						<h2>Avis</h2>
 						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto hic reiciendis eius. Impedit voluptate nihil et accusamus non, reprehenderit eius. Vitae, perspiciatis praesentium sint mollitia beatae reprehenderit. Pariatur, aspernatur repudiandae.</p>
 					</Product.Panel>
+				</Container>
+
+				<Container style={{ padding: "0" }}>
+					<img src={background_top} width="100%" />
+				</Container>
+
+				<Container>
+					<h2 style={{color: "white", fontStyle: "italic"}}>Cet artisan propose aussi :</h2>
+
+					<div className="d-flex justify-content-between">
+						<ProductCard product={this.state.product} />
+						<ProductCard product={this.state.product} />
+						<ProductCard product={this.state.product} />
+						<ProductCard product={this.state.product} />
+						<ProductCard product={this.state.product} />
+					</div>
+				</Container>
+
+				<Container style={{ padding: "0" }}>
+					<img src={background_bottom} width="100%" />
 				</Container>
 
 				<Footer />
