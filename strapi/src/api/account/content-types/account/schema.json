@@ -29,11 +29,6 @@
       "required": true,
       "minLength": 6
     },
-    "isArtisan": {
-      "type": "boolean",
-      "default": false,
-      "required": true
-    },
     "phoneNumber": {
       "type": "string",
       "unique": false

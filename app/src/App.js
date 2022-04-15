@@ -11,6 +11,7 @@ import {
   
 import Home from './pages/Home';
 import Connect from './pages/Connect';
+import Product from './pages/Product';
 
 
 
@@ -27,6 +28,8 @@ class App extends React.Component {
 					<Routes>
 						<Route exact path="/" element={<Home />} />
 						<Route exact path="/connect" element={<Connect />} />
+
+						<Route exact path="/product" element={<Product />} />
 					</Routes>
 				</Router>
 			</>

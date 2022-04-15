@@ -7,16 +7,24 @@ Product :
 Category :
 - Name
 
-User :
+Account :
 - firstName
 - lastName
 - email
 - password
-- isArtisan
+
+Artisan :
+- firstName
+- lastName
+- email
+- password
+- shop : Shop
 
 Shop :
-- Name
-- Domain
+- name
+- domain
+- owner : Artisan
+- products : Product
 
 ---
 

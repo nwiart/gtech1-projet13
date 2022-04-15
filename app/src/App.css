@@ -1,6 +1,12 @@
 body {
 	background: #e78c8c;
-	font-family: "Segoe UI Light";
+	font-family: "Segoe UI";
+	font-weight: 100;
+}
+
+/* Override default font weight. */
+h1, h2, h3, h4, h5, h6 {
+	font-weight: 100;
 }
 
 header {
