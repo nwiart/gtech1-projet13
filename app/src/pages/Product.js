@@ -120,9 +120,9 @@ class Product extends React.Component {
 								<h2>Caractéristiques</h2>
 								<p>
 									Poids : <br/>
-									Région : <br/>
-									Département : <br/>
-									Ville :
+									Région : {this.state.product.region.data.attributes.name}<br/>
+									Département : {this.state.product.department}<br/>
+									Ville : {this.state.product.city}
 								</p>
 							</Product.Panel>
 						</Col>
