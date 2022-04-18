@@ -12,6 +12,7 @@ import {
 import Home from './pages/Home';
 import Connect from './pages/Connect';
 import Product from './pages/Product';
+import Payment from './pages/Payment';
 
 
 
@@ -19,6 +20,10 @@ class App extends React.Component {
 
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			cart: ["test1", "test2", "test3"]
+		};
 	}
 
 	render() {
@@ -30,6 +35,8 @@ class App extends React.Component {
 						<Route exact path="/connect" element={<Connect />} />
 
 						<Route exact path="/product" element={<Product />} />
+
+						<Route exact path="/payment" element={<Payment cart={this.state.cart} />} />
 					</Routes>
 				</Router>
 			</>

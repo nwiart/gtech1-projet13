@@ -12,19 +12,15 @@ import ProductCard from "../components/ProductCard";
 import background_top from '../img/product_background_top.png';
 import background_bottom from '../img/product_background_bottom.png';
 
+import styles from '../css/Product.module.css';
+
 
 class Product extends React.Component {
 
 	// Light blue panel with round corners.
 	static Panel = (props) => {
 		return (
-			<div style={{
-				background: "#E6EBF0",
-				borderRadius: "16px",
-				margin: "16px",
-				padding: "32px",
-				color: "#123d65" }}>
-
+			<div className={styles.productInfoPanel}>
 				{props.children}
 			</div>
 		);

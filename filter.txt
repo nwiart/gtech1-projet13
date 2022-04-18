@@ -1,0 +1,7 @@
+minPrice = 0
+maxPrice = 1000
+
+let url = "http://localhost:1337/api/products";
+
+// Price.
+url += "?filters[$and][0][price][$gte]=" + minPrice + "&filters[$and][1][price][$lte]=" + maxPrice;

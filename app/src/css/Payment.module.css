@@ -1,0 +1,12 @@
+.paymentPanel {
+	background: #E6EBF0;
+	margin: 16px;
+	padding: 20px;
+	color: #123d65;
+}
+
+.acceptedPaymentMethodsPanel {
+	background: white;
+	padding: 10px;
+	margin-top: 20px;
+}
