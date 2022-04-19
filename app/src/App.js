@@ -7,7 +7,7 @@ import {
 	BrowserRouter as Router,
 	Route,
 	Routes,
-  } from 'react-router-dom';
+} from 'react-router-dom';
   
 import Home from './pages/Home';
 import Connect from './pages/Connect';
@@ -22,8 +22,13 @@ class App extends React.Component {
 		super(props);
 
 		this.state = {
+			user: undefined,
 			cart: ["test1", "test2", "test3"]
 		};
+	}
+
+	setUserSignedIn(user) {
+		this.setState( {user: user} );
 	}
 
 	render() {
@@ -32,9 +37,9 @@ class App extends React.Component {
 				<Router>
 					<Routes>
 						<Route exact path="/" element={<Home />} />
-						<Route exact path="/connect" element={<Connect />} />
+						<Route exact path="/connect" element={<Connect setUserSignedIn={(user) => this.setUserSignedIn(user)} />} />
 
-						<Route exact path="/product" element={<Product />} />
+						<Route exact path="/product" element={<Product user={this.state.user} />} />
 
 						<Route exact path="/payment" element={<Payment cart={this.state.cart} />} />
 					</Routes>

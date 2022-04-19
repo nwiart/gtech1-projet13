@@ -1,25 +1,95 @@
+import Config from "./Config";
+
+import axios from 'axios';
+
 export default class UserApi {
 
-	static url = "http://localhost:1337";
+	static async createUser(data) {
+
+		let accountID = await UserApi._createAccount(data.firstName, data.lastName, data.phoneNumber);
+		await UserApi._createStrapiUser(data.email, data.email, data.password, accountID);
+	}
 
 	/**
 	 * Retrieve user info from the database.
-	 * @param {object} requiredData - A JSON object containing all values that the returned user(s) should match.
 	 */
-	static async getUser(requiredData) {
+	static async getUser(email, password) {
 
-		let reqUrl = UserApi.url + "/api/accounts";
-		let i = 0;
-		for (let key in requiredData) {
-			if (requiredData.hasOwnProperty(key)) {
-				reqUrl += ((i == 0) ? "?" : "&") + "filters[" + key + "][$eq]=" + requiredData[key];
-			}
-			i++;
+		let res = await UserApi._getStrapiUser(email, password);
+		if (res.result == "error") {
+			return undefined;
 		}
 
-		let response = await fetch(reqUrl, { method: "GET", headers: { "Accept": "application/json", "Content-Type": "application/json" } });
-		let json = await response.json();
+		let strapiUser = res.data;
+		let account = await UserApi._getAccount(strapiUser.id);
 
-		return json;
+		return {
+			id: account.id,
+			firstName: account.firstName,
+			lastName: account.lastName,
+			email: strapiUser.email,
+			isArtisan: false
+		};
+	}
+
+	
+
+	static async _createAccount(firstName, lastName, phoneNumber) {
+
+		// Create our account.
+		let accountObj = { data: {
+			firstName: firstName,
+			lastName: lastName,
+			phoneNumber: phoneNumber
+		} };
+
+		let request = { method: "POST", headers: { "Accept": "application/json", "Content-Type": "application/json" }, body: JSON.stringify(accountObj) };
+		let response = await fetch(Config.dbUrl + "/api/accounts", request);
+		let json = await response.json();
+		let accountID = await json.data.id;
+
+		return accountID;
+	}
+
+	static async _getAccount(strapiUserID) {
+
+		let request = { method: "GET", headers: { "Accept": "application/json", "Content-Type": "application/json" } };
+		let response = await fetch(Config.dbUrl + "/api/accounts?filters[user][id][$eq]=" + strapiUserID, request);
+		return await response.json();
+	}
+
+	static async _createStrapiUser(username, email, password, accountID) {
+
+		// Create Strapi user after the actual account.
+		await axios.post(Config.dbUrl + "/api/auth/local/register", {
+			username: username,
+			email: email,
+			password: password,
+			account: accountID
+		}).then(() => {
+
+		}).catch((error) => {
+			console.log('An error occurred:', error.response);
+		});
+	}
+
+	static async _getStrapiUser(email, password) {
+
+		let res = undefined;
+
+		await axios.post(Config.dbUrl + "/api/auth/local", {
+			identifier: email,
+			password: password
+
+			// Login successful.
+		}).then((response) => {
+			res = {result: "success", data: response.data.user};
+
+			// Login failed.
+		}).catch((error) => {
+			res = {result: "error", data: error.response};
+		});
+
+		return res;
 	}
 };
