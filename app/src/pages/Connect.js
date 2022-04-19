@@ -93,8 +93,6 @@ class Connect extends React.Component {
 	render() {
 		return (
 			<>
-				<Header />
-
 				<Container style={{background: "white"}}>
 					<Tabs defaultTab="#sign-in">
 						<div className="tab-navbar">
@@ -172,8 +170,6 @@ class Connect extends React.Component {
 						</div>
 					</Tabs>
 				</Container>
-
-				<Footer />
 			</>
 		);
 	}

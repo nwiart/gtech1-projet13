@@ -13,6 +13,8 @@ import Home from './pages/Home';
 import Connect from './pages/Connect';
 import Product from './pages/Product';
 import Payment from './pages/Payment';
+import Footer from './components/Footer';
+import Header from './components/Header';
 
 
 
@@ -27,13 +29,30 @@ class App extends React.Component {
 		};
 	}
 
+	componentDidMount() {
+		if (localStorage.getItem("user") !== "undefined") {
+			this.setState({ user: JSON.parse(localStorage.getItem("user")) });
+		}
+
+		window.onbeforeunload = () => {
+			localStorage.setItem("user", this.state.user === undefined ? "undefined" : JSON.stringify(this.state.user));
+		};
+	}
+
 	setUserSignedIn(user) {
 		this.setState( {user: user} );
+	}
+
+	signOut() {
+		this.setState( {user: undefined} );
+		localStorage.setItem("user", "undefined");
 	}
 
 	render() {
 		return (
 			<>
+				<Header />
+
 				<Router>
 					<Routes>
 						<Route exact path="/" element={<Home />} />
@@ -44,6 +63,8 @@ class App extends React.Component {
 						<Route exact path="/payment" element={<Payment cart={this.state.cart} />} />
 					</Routes>
 				</Router>
+
+				<Footer />
 			</>
 		);
 	}

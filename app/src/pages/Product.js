@@ -91,13 +91,9 @@ class Product extends React.Component {
 		if (this.state.product === undefined) {
 			return (
 				<>
-					<Header />
-
 					<Container style={{ background: "white", minHeight: "100vh" }}>
 						Chargement...
 					</Container>
-
-					<Footer />
 				</>
 			)
 		}
@@ -106,13 +102,9 @@ class Product extends React.Component {
 		if (this.state.product === null) {
 			return (
 				<>
-					<Header />
-
 					<Container style={{ background: "white", minHeight: "100vh" }}>
 						Ce produit n'existe pas.
 					</Container>
-
-					<Footer />
 				</>
 			);
 		}
@@ -120,8 +112,6 @@ class Product extends React.Component {
 		// Found product.
 		return (
 			<>
-				<Header />
-
 				<Container style={{ background: "white", padding: "12px" }}>
 					<Row>
 						<Col xs={6}>
@@ -205,8 +195,6 @@ class Product extends React.Component {
 				<Container style={{ padding: "0" }}>
 					<img src={background_bottom} width="100%" />
 				</Container>
-
-				<Footer />
 
 
 

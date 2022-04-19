@@ -33,8 +33,6 @@ class Payment extends React.Component {
 
 		return (
 			<>
-				<Header />
-
 				<Container style={{ background: "white", minHeight: "100vh" }}>
 					<Row>
 						<Col xs="7" style={{ padding: "0" }}>
@@ -77,8 +75,6 @@ class Payment extends React.Component {
 						</Col>
 					</Row>
 				</Container>
-
-				<Footer />
 			</>
 		);
 	}
