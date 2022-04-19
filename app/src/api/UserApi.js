@@ -54,7 +54,7 @@ export default class UserApi {
 	static async _getAccount(strapiUserID) {
 
 		let request = { method: "GET", headers: { "Accept": "application/json", "Content-Type": "application/json" } };
-		let response = await fetch(Config.dbUrl + "/api/accounts?filters[user][id][$eq]=" + strapiUserID, request);
+		let response = await fetch(Config.dbUrl + "/api/accounts?filters[user][id][$in]=" + strapiUserID, request);
 		return await response.json();
 	}
 

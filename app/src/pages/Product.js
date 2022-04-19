@@ -1,12 +1,7 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
+import { Button, Col, Container, Form, Modal, Row, Toast } from "react-bootstrap";
 
-import star from '../img/star.png';
-import star_half from '../img/star_half.png';
-import star_empty from '../img/star_empty.png';
 import ProductCard from "../components/ProductCard";
 
 import background_top from '../img/product_background_top.png';
@@ -15,6 +10,8 @@ import background_bottom from '../img/product_background_bottom.png';
 import styles from '../css/Product.module.css';
 import { withRouter } from "../withRouter";
 import ProductReviewApi from "../api/ProductReviewApi";
+import ProductReview from "../components/ProductReview";
+import Rating from "../components/Rating";
 
 
 class Product extends React.Component {
@@ -35,18 +32,22 @@ class Product extends React.Component {
 			product: undefined,
 			shop: undefined,
 
-			modalVisible: false
+			modalVisible: false,
+			showReviewToast: false
 		};
 	}
 
 	onLeaveReview() {
-		if (this.props.user === undefined) {
-			//this.props.navigate("/connect");
-			
-		}
-		else {
-			this.setState({modalVisible: true});
-		}
+		ProductReviewApi.leaveReview({id: this.props.user.id}, this.state.productID, 4, "Cool");
+		this.setState({modalVisible: false, showReviewToast: true});
+	}
+
+	onShowReviewModal() {
+		this.setState({modalVisible: true});
+	}
+
+	onHideReviewModal() {
+		this.setState({modalVisible: false});
 	}
 
 	async componentDidMount() {
@@ -60,7 +61,23 @@ class Product extends React.Component {
 			const productID = await urlParams.get("id");
 
 			// Get product.
-			let response = await fetch("http://localhost:1337/api/products/" + productID + "?populate=*", {method:"GET", headers: {"Accept": "application/json", "Content-Type": "application/json"}});
+			const qs = require("qs");
+			const querys = qs.stringify(
+				{
+					populate: {
+						shop: {populate: ["*"]},
+						pictures: "*",
+						region: {populate: ["*"]},
+						product_reviews: {
+							populate: ["publisher"]
+						}
+					}
+				},
+				{
+					encodeValuesOnly: true
+				}
+			);
+			let response = await fetch("http://localhost:1337/api/products/" + productID + "?" + querys, {method:"GET", headers: {"Accept": "application/json", "Content-Type": "application/json"}});
 			let json = await response.json();
 
 			// Product does not exist.
@@ -110,6 +127,32 @@ class Product extends React.Component {
 		}
 
 		// Found product.
+		const Reviews = (props) => {
+			if (props.reviews.length == 0) {
+				return "Il n'y a aucun avis sur ce produit pour le moment.";
+			}
+			else {
+				return (
+					<Row>
+						<p>{props.reviews.length} avis</p>
+						{
+							props.reviews.map((u, i) => {
+								return (
+									<Col xs="6">
+										<ProductReview
+											publisherName={u.attributes.publisher.data.attributes.firstName + " " + u.attributes.publisher.data.attributes.lastName}
+											publishDate={u.attributes.createdAt}
+											rating={u.attributes.rating}
+											comment={u.attributes.comment} />
+									</Col>
+								);
+							})
+						}
+					</Row>
+				);
+			}
+		};
+
 		return (
 			<>
 				<Container style={{ background: "white", padding: "12px" }}>
@@ -132,11 +175,7 @@ class Product extends React.Component {
 							<Product.Panel>
 								{ /* Product name, notation, description and price. */ }
 								<h2>{this.state.product.name}</h2>
-								<img width="16" height="16" src={this.state.product.notation == 1 ? star_half : (this.state.product.notation >= 2  ? star : star_empty)} />
-								<img width="16" height="16" src={this.state.product.notation == 3 ? star_half : (this.state.product.notation >= 4  ? star : star_empty)} />
-								<img width="16" height="16" src={this.state.product.notation == 5 ? star_half : (this.state.product.notation >= 6  ? star : star_empty)} />
-								<img width="16" height="16" src={this.state.product.notation == 7 ? star_half : (this.state.product.notation >= 8  ? star : star_empty)} />
-								<img width="16" height="16" src={this.state.product.notation == 9 ? star_half : (this.state.product.notation == 10 ? star : star_empty)} />
+								<Rating rating={this.state.product.notation} />
 								<p>{this.state.product.description}</p>
 
 								<p style={{fontSize: "3em", fontWeight: "bold"}}>{this.state.product.price}€</p>
@@ -166,13 +205,14 @@ class Product extends React.Component {
 							<h2 style={{flex: "1"}}>Avis</h2>
 
 							{
-								this.props.user === undefined
-									? <button onClick={() => this.onLeaveReview()} className="btn-disabled" disabled>Connectez-vous pour laisser un avis</button>
-									: <button onClick={() => this.onLeaveReview()}>Laisser un avis</button>
+								this.props.user === undefined || this.props.user === null
+									? <button className="btn-disabled" disabled>Connectez-vous pour laisser un avis</button>
+									: <button onClick={() => this.onShowReviewModal()}>Laisser un avis</button>
 							}
 							
 						</div>
-						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto hic reiciendis eius. Impedit voluptate nihil et accusamus non, reprehenderit eius. Vitae, perspiciatis praesentium sint mollitia beatae reprehenderit. Pariatur, aspernatur repudiandae.</p>
+						
+						<Reviews reviews={this.state.product.product_reviews.data} />
 					</Product.Panel>
 				</Container>
 
@@ -198,21 +238,45 @@ class Product extends React.Component {
 
 
 
-				<Modal show={this.state.modalVisible}>
+				{ /* Leave a review modal. */ }
+				<Modal show={this.state.modalVisible} onHide={() => this.onHideReviewModal()}>
 					<Modal.Header>
 						<Modal.Title>Laisser un avis</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
 						Choisissez une note ci-dessous et écrivez un commentaire (optionnel) :
+
 						<Form>
-							
+							<Form.Group>
+								<Form.Label>Note* (sur 5 étoiles)</Form.Label><br/>
+								<Form.Check inline label="1" name="stars" type="radio" />
+								<Form.Check inline label="2" name="stars" type="radio" />
+								<Form.Check inline label="3" name="stars" type="radio" />
+								<Form.Check inline label="4" name="stars" type="radio" />
+								<Form.Check inline label="5" name="stars" type="radio" />
+							</Form.Group>
+
+							<Form.Group className="mb-3">
+								<Form.Label>Commentaire</Form.Label>
+								<Form.Control as="textarea" rows={3} />
+							</Form.Group>
 						</Form>
 					</Modal.Body>
 					<Modal.Footer>
-						<Button variant="secondary">Annuler</Button>
-						<Button variant="primary" onClick={() => {ProductReviewApi.leaveReview({id: this.props.user.id}, this.state.productID, 4, "Cool");}}>Envoyer</Button>
+						<Button variant="secondary" onClick={() => this.onHideReviewModal()}>Annuler</Button>
+						<Button variant="primary" onClick={() => this.onLeaveReview()}>Envoyer</Button>
 					</Modal.Footer>
 				</Modal>
+
+				{ /* Toast message notifying of the review being sent. */ }
+				<Toast show={this.state.showReviewToast} style={{position:"fixed", bottom: "1em", right:"1em"}}>
+					<Toast.Header>
+						<img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
+						<strong className="me-auto">Avis posté!</strong>
+						<small>{this.state.product.name}</small>
+					</Toast.Header>
+					<Toast.Body>Votre avis a été posté.</Toast.Body>
+				</Toast>
 			</>
 		)
 	}

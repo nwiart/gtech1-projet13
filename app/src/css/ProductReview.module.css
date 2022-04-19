@@ -1,0 +1,9 @@
+.productReviewContainer {
+	background: white;
+	padding: 16px;
+}
+
+.productReviewContainer .publisherName {
+	color: black;
+	margin: 0;
+}
