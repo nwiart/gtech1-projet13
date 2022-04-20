@@ -1,0 +1,7 @@
+.productCardBackground {
+	display: inline-block;
+	background: white;
+	border-radius: 16px;
+	padding: 1em;
+	box-shadow: #00000050 10px 20px 10px;
+}

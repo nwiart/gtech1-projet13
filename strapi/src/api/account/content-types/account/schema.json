@@ -20,18 +20,15 @@
       "type": "string",
       "required": true
     },
-    "email": {
-      "type": "email",
-      "unique": true
-    },
-    "password": {
-      "type": "password",
-      "required": true,
-      "minLength": 6
-    },
     "phoneNumber": {
       "type": "string",
       "unique": false
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "account"
     }
   }
 }

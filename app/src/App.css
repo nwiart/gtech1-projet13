@@ -56,6 +56,11 @@ button {
 	padding: 0.5em 1em;
 }
 
+.btn-disabled {
+	background: #123d6530;
+	color: #00000040;
+}
+
 .tabs {
 	width: 70%;
 	margin: 0 auto;

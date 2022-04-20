@@ -8,6 +8,7 @@ import Tabs from "../components/Tabs";
 import $ from 'jquery';
 
 import UserApi from '../api/UserApi';
+import { withRouter } from "../withRouter";
 
 class Connect extends React.Component {
 
@@ -26,14 +27,16 @@ class Connect extends React.Component {
 
 	async login() {
 
-		let json = await UserApi.getUser( { email: this.state.email, password: this.state.password } );
+		let user = await UserApi.getUser(this.state.email, this.state.password);
 
 		// If it's empty, this means no matching user was found.
-		if (json.data.length != 1) {
+		if (user === undefined) {
 			$("#invalid-email-or-password").css("display", "inline");
 		}
 		else {
-			$("#invalid-email-or-password").css("display", "none");
+			this.props.setUserSignedIn(user);
+			console.log(user);
+			this.props.navigate("/product?id=1");
 		}
 	}
 
@@ -54,29 +57,23 @@ class Connect extends React.Component {
 		}
 
 		// Make the request!
-		let obj = {
-			data: {
-				firstName: this.state.firstName,
-				lastName: this.state.lastName,
-				email: this.state.email,
-				password: this.state.password,
-				isArtisan: false
-			}
+		let data = {
+			firstName: this.state.firstName, lastName: this.state.lastName,
+			email: this.state.email, password: this.state.password,
+			phoneNumber: "",
+			isArtisan: false
 		};
 
-		let request = {
-			method: "POST",
-			headers: {
-				"Accept": "application/json",
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify(obj)
-		};
+		await UserApi.createUser(data);
 
-		let response = await fetch("http://localhost:1337/api/accounts/", request)
-		.then((json) => {
-			json.status();
-		});
+		// Sign in new user, if this fails, it means that there was an error.
+		let user = await UserApi.getUser(this.state.email, this.state.password);
+		if (user === undefined) {
+			$("#sign-up-error").css("display", "inline").html("Une erreur s'est produite. L'email est peut-être déjà utilisé.");
+		}
+		else {
+			this.props.setUserSignedIn(user);
+		}
 	}
 
 	//
@@ -96,8 +93,6 @@ class Connect extends React.Component {
 	render() {
 		return (
 			<>
-				<Header />
-
 				<Container style={{background: "white"}}>
 					<Tabs defaultTab="#sign-in">
 						<div className="tab-navbar">
@@ -175,11 +170,9 @@ class Connect extends React.Component {
 						</div>
 					</Tabs>
 				</Container>
-
-				<Footer />
 			</>
 		);
 	}
 }
 
-export default Connect;
+export default withRouter(Connect);

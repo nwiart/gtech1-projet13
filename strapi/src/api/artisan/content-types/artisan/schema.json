@@ -12,23 +12,16 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "firstName": {
-      "type": "string"
-    },
-    "lastName": {
-      "type": "string"
-    },
-    "email": {
-      "type": "email"
-    },
-    "password": {
-      "type": "password"
-    },
     "shop": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::shop.shop",
       "mappedBy": "artisan"
+    },
+    "account": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::account.account"
     }
   }
 }

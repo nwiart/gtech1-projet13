@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-import { Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 
@@ -12,19 +12,17 @@ import ProductCard from "../components/ProductCard";
 import background_top from '../img/product_background_top.png';
 import background_bottom from '../img/product_background_bottom.png';
 
+import styles from '../css/Product.module.css';
+import { withRouter } from "../withRouter";
+import ProductReviewApi from "../api/ProductReviewApi";
+
 
 class Product extends React.Component {
 
 	// Light blue panel with round corners.
 	static Panel = (props) => {
 		return (
-			<div style={{
-				background: "#E6EBF0",
-				borderRadius: "16px",
-				margin: "16px",
-				padding: "32px",
-				color: "#123d65" }}>
-
+			<div className={styles.productInfoPanel}>
 				{props.children}
 			</div>
 		);
@@ -35,8 +33,20 @@ class Product extends React.Component {
 
 		this.state = {
 			product: undefined,
-			shop: undefined
+			shop: undefined,
+
+			modalVisible: false
 		};
+	}
+
+	onLeaveReview() {
+		if (this.props.user === undefined) {
+			//this.props.navigate("/connect");
+			
+		}
+		else {
+			this.setState({modalVisible: true});
+		}
 	}
 
 	async componentDidMount() {
@@ -67,8 +77,9 @@ class Product extends React.Component {
 			json = await response.json();
 			let shop = json.data.attributes;
 
-			this.setState( {
+			await this.setState( {
 				product: product,
+				productID: productID,
 				shop: shop
 			} );
 		}, 500 );
@@ -80,13 +91,9 @@ class Product extends React.Component {
 		if (this.state.product === undefined) {
 			return (
 				<>
-					<Header />
-
 					<Container style={{ background: "white", minHeight: "100vh" }}>
 						Chargement...
 					</Container>
-
-					<Footer />
 				</>
 			)
 		}
@@ -95,13 +102,9 @@ class Product extends React.Component {
 		if (this.state.product === null) {
 			return (
 				<>
-					<Header />
-
 					<Container style={{ background: "white", minHeight: "100vh" }}>
 						Ce produit n'existe pas.
 					</Container>
-
-					<Footer />
 				</>
 			);
 		}
@@ -109,8 +112,6 @@ class Product extends React.Component {
 		// Found product.
 		return (
 			<>
-				<Header />
-
 				<Container style={{ background: "white", padding: "12px" }}>
 					<Row>
 						<Col xs={6}>
@@ -161,7 +162,16 @@ class Product extends React.Component {
 					</Product.Panel>
 
 					<Product.Panel>
-						<h2>Avis</h2>
+						<div className="d-flex">
+							<h2 style={{flex: "1"}}>Avis</h2>
+
+							{
+								this.props.user === undefined
+									? <button onClick={() => this.onLeaveReview()} className="btn-disabled" disabled>Connectez-vous pour laisser un avis</button>
+									: <button onClick={() => this.onLeaveReview()}>Laisser un avis</button>
+							}
+							
+						</div>
 						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto hic reiciendis eius. Impedit voluptate nihil et accusamus non, reprehenderit eius. Vitae, perspiciatis praesentium sint mollitia beatae reprehenderit. Pariatur, aspernatur repudiandae.</p>
 					</Product.Panel>
 				</Container>
@@ -186,10 +196,26 @@ class Product extends React.Component {
 					<img src={background_bottom} width="100%" />
 				</Container>
 
-				<Footer />
+
+
+				<Modal show={this.state.modalVisible}>
+					<Modal.Header>
+						<Modal.Title>Laisser un avis</Modal.Title>
+					</Modal.Header>
+					<Modal.Body>
+						Choisissez une note ci-dessous et écrivez un commentaire (optionnel) :
+						<Form>
+							
+						</Form>
+					</Modal.Body>
+					<Modal.Footer>
+						<Button variant="secondary">Annuler</Button>
+						<Button variant="primary" onClick={() => {ProductReviewApi.leaveReview({id: this.props.user.id}, this.state.productID, 4, "Cool");}}>Envoyer</Button>
+					</Modal.Footer>
+				</Modal>
 			</>
 		)
 	}
 }
 
-export default Product;
+export default withRouter(Product);

@@ -1,8 +1,9 @@
+import styles from "../css/ProductCard.module.css";
 
 const ProductCard = (props) => {
 
 	return (
-		<div style={{ display: "inline-block", background: "white", borderRadius: "16px", padding: "1em", boxShadow: "#00000050 10px 20px 10px" }}>
+		<div className={styles.productCardBackground}>
 			<p>{props.product.name}</p>
 
 			<div className="d-flex text-center">
