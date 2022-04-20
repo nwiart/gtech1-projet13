@@ -52,9 +52,9 @@ class App extends React.Component {
 	render() {
 		return (
 			<>
-				<Header />
-
 				<Router>
+					<Header user={this.state.user} signOut={() => this.signOut()} />
+
 					<Routes>
 						<Route exact path="/" element={<Home />} />
 						<Route exact path="/connect" element={<Connect setUserSignedIn={(user) => this.setUserSignedIn(user)} />} />

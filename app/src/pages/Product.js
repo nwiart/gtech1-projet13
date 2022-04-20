@@ -33,12 +33,15 @@ class Product extends React.Component {
 			shop: undefined,
 
 			modalVisible: false,
-			showReviewToast: false
+			showReviewToast: false,
+			reviewRating: 1,
+			reviewComment: ""
 		};
 	}
 
 	onLeaveReview() {
-		ProductReviewApi.leaveReview({id: this.props.user.id}, this.state.productID, 4, "Cool");
+		console.log(this.props.user);
+		ProductReviewApi.leaveReview({id: this.props.user.id}, this.state.productID, this.state.reviewRating, this.state.reviewComment);
 		this.setState({modalVisible: false, showReviewToast: true});
 	}
 
@@ -248,17 +251,17 @@ class Product extends React.Component {
 
 						<Form>
 							<Form.Group>
-								<Form.Label>Note* (sur 5 étoiles)</Form.Label><br/>
-								<Form.Check inline label="1" name="stars" type="radio" />
-								<Form.Check inline label="2" name="stars" type="radio" />
-								<Form.Check inline label="3" name="stars" type="radio" />
-								<Form.Check inline label="4" name="stars" type="radio" />
-								<Form.Check inline label="5" name="stars" type="radio" />
+								<Form.Label>Note (sur 5 étoiles)*</Form.Label><br/>
+								<Form.Check inline label="1" name="stars" required type="radio" onClick={() => this.setState({reviewRating: 1})} />
+								<Form.Check inline label="2" name="stars" required type="radio" onClick={() => this.setState({reviewRating: 2})} />
+								<Form.Check inline label="3" name="stars" required type="radio" onClick={() => this.setState({reviewRating: 3})} />
+								<Form.Check inline label="4" name="stars" required type="radio" onClick={() => this.setState({reviewRating: 4})} />
+								<Form.Check inline label="5" name="stars" required type="radio" onClick={() => this.setState({reviewRating: 5})} />
 							</Form.Group>
 
 							<Form.Group className="mb-3">
 								<Form.Label>Commentaire</Form.Label>
-								<Form.Control as="textarea" rows={3} />
+								<Form.Control as="textarea" rows={3} onChange={(e) => this.setState({reviewComment: e.target.value})} />
 							</Form.Group>
 						</Form>
 					</Modal.Body>

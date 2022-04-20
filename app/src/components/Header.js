@@ -1,14 +1,22 @@
-const Header = () => {
+import { Container } from "react-bootstrap";
+import MyNavbar from "./MyNavbar";
+
+const Header = (props) => {
 
 	return (
 		<header>
-			<div>
+			<MyNavbar user={props.user} signOut={props.signOut} />
 
-			</div>
-
-			<div className="categories">
-				
-			</div>
+			<Container className="categories">
+				<div>Alimentation</div>
+				<div>Bijoux</div>
+				<div>Boissons</div>
+				<div>Cosmétiques</div>
+				<div>Décoration</div>
+				<div>Meubles</div>
+				<div>Outils</div>
+				<div>Vêtements</div>
+			</Container>
 		</header>
 	);
 }
