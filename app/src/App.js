@@ -15,6 +15,7 @@ import Product from './pages/Product';
 import Payment from './pages/Payment';
 import Footer from './components/Footer';
 import Header from './components/Header';
+import Artisan from './pages/Artisan';
 
 
 
@@ -59,6 +60,7 @@ class App extends React.Component {
 						<Route exact path="/connect" element={<Connect setUserSignedIn={(user) => this.setUserSignedIn(user)} />} />
 
 						<Route exact path="/product" element={<Product user={this.state.user} />} />
+						<Route exact path="/artisan" element={<Artisan />} />
 
 						<Route exact path="/payment" element={<Payment cart={this.state.cart} />} />
 					</Routes>

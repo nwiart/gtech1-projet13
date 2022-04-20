@@ -41,7 +41,6 @@ export default class Home extends React.Component {
 
 		return (
 			<>
-				<Header/>
 				<Container style={{ background: "white", minHeight: "100vh" }}>
 				<div class="container">
 					<div className="text-center">
@@ -66,7 +65,7 @@ export default class Home extends React.Component {
 							<img src={ligne}/>
 							<div className="text-description">
 								<div className="title">
-									<h2>Bienvenu sur l'Artisan</h2>
+									<h2>Bienvenue sur l'Artisan</h2>
 								</div>
 								<div className="description">
 									<p>Le premier site de e-commerce te permettant de te procurer des produits locaux réalisés par des artisans Français!
@@ -106,7 +105,6 @@ export default class Home extends React.Component {
 					</div>
 				</div>
 				</Container>
-				<Footer />
 				<div className="end_page">
 				<img src={image_footer} width="100%"/>
 				</div>

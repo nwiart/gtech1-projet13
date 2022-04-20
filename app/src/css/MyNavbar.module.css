@@ -1,0 +1,12 @@
+.navbar {
+	display: block;
+	height: 100%;
+	align-items: center;
+}
+
+/*not working for no reason*/
+.navbar * {
+	margin: 24px 16px;
+	margin-top: auto;
+	margin-bottom: auto;
+}
