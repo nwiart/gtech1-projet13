@@ -1,3 +1,5 @@
+@import "react-alice-carousel/lib/alice-carousel.css";
+
 body {
 	background: #e78c8c;
 	font-family: "Segoe UI";
@@ -75,4 +77,13 @@ button {
 	   -moz-user-select: none;
 	    -ms-user-select: none;
 	        user-select: none;
+}
+
+.logoTitre{
+	margin-top: 80px;
+
+}
+
+.blue {
+	color: #123d65;
 }
