@@ -21,14 +21,28 @@
       "target": "api::product.product",
       "mappedBy": "shop"
     },
-    "artisan": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::artisan.artisan",
-      "inversedBy": "shop"
-    },
     "description": {
       "type": "text"
+    },
+    "Banner": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "Images": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": true
     }
   }
 }
