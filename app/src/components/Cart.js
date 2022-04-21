@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import { Container, Row, Col, Button, Modal } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import Menu from '../components/Menu';
-import GameCart from '../components/ProductCart';
-import FooterComposant from '../components/Footer';
-
 class Cart extends Component {
   constructor(props){
     super(props)
@@ -55,16 +51,12 @@ class Cart extends Component {
   render(){
     return (
       <>
-        <Menu/>
         <Container className='bg-dark cart-page'>
           <Row>
             <Col xs={10} xl={10}>
               <h2 className='text-center'>Panier</h2>
               <div className="line"></div>
               <Container className='text-center cart-articles'>
-                {localStorage.getItem('gamesInTheCart') && localStorage.getItem('gamesInTheCart').length > 0 && JSON.parse(localStorage.getItem('gamesInTheCart')).map((article, i)=>
-                  <GameCart key={i} gameArticle={article} updateTheCart={this.props.updateTheCart} gameId={i}></GameCart>)
-                }
               </Container>
             </Col>
             <Col>
@@ -83,10 +75,10 @@ class Cart extends Component {
             </Col>
           </Row>
         </Container>
-        <FooterComposant/>
 
         <Modal show={this.state.modalShow} onHide={this.handleClose}>
           <Modal.Header closeButton>
+
           </Modal.Header>
           <Modal.Footer>
             <Link to='/'>

@@ -19,9 +19,11 @@ import boulanger1 from "../images/ImageBoulanger1.png";
 import boulanger2 from "../images/ImageBoulanger2.png";
 import boulanger3 from "../images/ImageBoulanger3.png";
 
-import carousel1 from "../images/carousel1.png";
-import carousel2 from "../images/carousel2.png";
-import carousel3 from "../images/carousel3.png";
+import background_top from '../img/product_background_top.png';
+import background_bottom from '../img/product_background_bottom.png';
+
+import Config from "../api/Config";
+import ProductCard from "../components/ProductCard";
 
 
 
@@ -33,33 +35,54 @@ import carousel3 from "../images/carousel3.png";
 	<img src="boulanger3" onDragStart={handleDragStart} />,
 	];	
 
-export default class Home extends React.Component {
+class Home extends React.Component {
 
+	constructor(props) {
+		super(props);
 
+		this.state = {
+			carouselImages: [],
+			welcomeParagraph: ""
+		};
+	}
+
+	async componentDidMount() {
+		let response = await fetch(Config.dbUrl + "/api/homepage?populate=*", {method:"GET", headers:{"Accept": "application/json", "Content-Type": "application/json"}});
+		let json = await response.json();
+		
+		let imageUrls = [];
+		await json.data.attributes.carousel.data.forEach(e => {
+			imageUrls.push(Config.dbUrl + e.attributes.url);
+		});
+
+		this.setState({
+			carouselImages: imageUrls,
+			welcomeParagraph: json.data.attributes.welcome_paragraph
+		});
+	}
 
 	render() {
-
 		return (
 			<>
 				<Container style={{ background: "white", minHeight: "100vh" }}>
-				<div class="container">
+				<div className="container">
 					<div className="text-center">
 						<div className="logoTitre">
 							<img src={calquelogo} width="300" style={{"borderRadius": "300px"}} />
 						</div>
 
 						<div className="blue">
-							<div style={{ display: 'block', width: 700, padding: 30 }}>
-								<Carousel>
-									<Carousel.Item interval={1500}>
-										<img className="d-block w-100" src={carousel1} alt="Image One"/>
-									</Carousel.Item>
-									<Carousel.Item interval={1500}>
-										<img className="d-block w-100" src={carousel2} alt="Image Two"/>
-									</Carousel.Item>
-									<Carousel.Item interval={1500}>
-										<img className="d-block w-100" src={carousel3} alt="Image Three"/>
-									</Carousel.Item>
+							<div style={{ display: 'block', padding: 30 }}>
+								<Carousel style={{zIndex: 0}}>
+									{	
+										this.state.carouselImages.map((u, i) => {
+											return (
+												<Carousel.Item key={i} interval={1500}>
+													<img className="d-block w-100" src={u} />
+												</Carousel.Item>
+											);
+										})
+									}
 								</Carousel>
 							</div>
 							<img src={ligne}/>
@@ -68,30 +91,47 @@ export default class Home extends React.Component {
 									<h2>Bienvenue sur l'Artisan</h2>
 								</div>
 								<div className="description">
-									<p>Le premier site de e-commerce te permettant de te procurer des produits locaux réalisés par des artisans Français!
-									Nos partenaires produisent de la nourriture, des boissons, des meubles, des vêtements ou encore tout ce qu'il faut en maroquinerie.
-									Saucissons, fromages, paniers cadeaux ou encore du parfum artisanal, tu trouveras ton bonheur parmi tout nos produits!
-									</p>
+									<p>{this.state.welcomeParagraph}</p>
 								</div>
 							</div>
 							<img src={ligne}/>
 							<div>
 								<h2>Découvrez les produit de nos régions</h2>
 							</div>
-							<img src={carte} width="572"/>
+							<img src={carte} width="572" style={{dispaly: "block"}}/>
 
 							<img src={ligne}/>
-							<img src={plan1} width="1138"/>
 						</div>
-						<div>
-							<h3>Nos recommandations produits</h3>
 						</div>
-						<img src={ligne_blanche}/>
+						</div>
+				</Container>
 
+				<Container style={{ padding: "0" }}>
+					<img src={background_top} width="100%" />
+				</Container>
+
+				<Container>
+						<div>
+							<h3 className="text-white">Nos recommandations produits</h3>
+						</div>
 						
-						<img src={ligne_blanche}/>
-						<img src={plan1} width="1138"/>
-						<img src={plan2} width="1138"/>
+						<div className="d-flex justify-content-between">
+							<ProductCard product={{name: "Produit1", price: 7.99}} />
+							<ProductCard product={{name: "Produit2", price: 15.99}} />
+							<ProductCard product={{name: "Produit3", price: 8.99}} />
+							<ProductCard product={{name: "Produit4", price: 26.49}} />
+							<ProductCard product={{name: "Produit5", price: 3.99}} />
+						</div>
+				</Container>
+
+					<Container style={{ padding: "0" }}>
+					<img src={background_bottom} width="100%" />
+				</Container>
+					
+				<Container style={{ padding: "0" }}>
+					<img src={background_top} width="100%" />
+				</Container>
+				<Container>
 						<div>
 							<h3>Nos recommandations artisans</h3>
 						</div>
@@ -102,13 +142,16 @@ export default class Home extends React.Component {
 								<AliceCarousel mouseTracking items={items} />
 							</Col>
 						</Container>
-					</div>
-				</div>
 				</Container>
+
+				
+
 				<div className="end_page">
 				<img src={image_footer} width="100%"/>
 				</div>
 			</>
 		);
-	}
+	};
 }
+
+export default Home;

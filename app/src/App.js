@@ -31,12 +31,12 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
-		if (localStorage.getItem("user") !== "undefined") {
-			this.setState({ user: JSON.parse(localStorage.getItem("user")) });
-		}
+		if (localStorage.getItem("user") != "undefined") this.setState({ user: JSON.parse(localStorage.getItem("user")) });
+		if (localStorage.getItem("cart") != null) this.setState({ cart: JSON.parse(localStorage.getItem("cart")) });
 
 		window.onbeforeunload = () => {
 			localStorage.setItem("user", this.state.user === undefined ? "undefined" : JSON.stringify(this.state.user));
+			localStorage.setItem("cart", JSON.stringify(this.state.cart));
 		};
 	}
 

@@ -198,7 +198,7 @@ class Product extends React.Component {
 								<h2>{this.state.shop.name}</h2>
 								<p>{this.state.shop.description}</p>
 
-								<Link to="/product">Voir la page de cet artisan</Link>
+								<Link to={"/artisan?id=" + this.state.shop.artisan.data.id}>Voir la page de cet artisan</Link>
 							</Col>
 						</Row>
 					</Product.Panel>
