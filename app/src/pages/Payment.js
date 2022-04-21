@@ -1,11 +1,13 @@
 import React from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Modal, Row } from "react-bootstrap";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 
 import methodes_paiement from "../img/methodes_paiement.png";
 
 import styles from "../css/Payment.module.css";
+import Cart from "../components/Cart";
+import { Link } from "react-router-dom";
 
 class Payment extends React.Component {
 

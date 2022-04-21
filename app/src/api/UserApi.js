@@ -20,11 +20,11 @@ export default class UserApi {
 			return undefined;
 		}
 
-		let strapiUser = res.data;
-		let account = await UserApi._getAccount(strapiUser.id);
+		let strapiUser = res.data.user;
+		let account = await UserApi._getAccount(strapiUser.account_id);
 
 		return {
-			id: account.id,
+			id: strapiUser.account_id,
 			firstName: account.firstName,
 			lastName: account.lastName,
 			email: strapiUser.email,
@@ -51,11 +51,12 @@ export default class UserApi {
 		return accountID;
 	}
 
-	static async _getAccount(strapiUserID) {
+	static async _getAccount(id) {
 
 		let request = { method: "GET", headers: { "Accept": "application/json", "Content-Type": "application/json" } };
-		let response = await fetch(Config.dbUrl + "/api/accounts?filters[user][id][$eq]=" + strapiUserID, request);
-		return await response.json();
+		let response = await fetch(Config.dbUrl + "/api/accounts/" + id, request);
+		let json = await response.json();
+		return json.data.attributes;
 	}
 
 	static async _createStrapiUser(username, email, password, accountID) {
@@ -65,7 +66,7 @@ export default class UserApi {
 			username: username,
 			email: email,
 			password: password,
-			account: accountID
+			account_id: accountID
 		}).then(() => {
 
 		}).catch((error) => {
@@ -83,7 +84,8 @@ export default class UserApi {
 
 			// Login successful.
 		}).then((response) => {
-			res = {result: "success", data: response.data.user};
+			res = {result: "success", data: response.data};
+			console.log(res.data);
 
 			// Login failed.
 		}).catch((error) => {

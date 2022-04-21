@@ -26,10 +26,26 @@ header .categories {
 	position: absolute;
 	top: 96px;
 	height: 70px;
+	padding: 0 15%;
 
-	display: block;
-	width: 100%;
+	display: flex;
+	justify-content: center;
+	min-width: 100vw;
 	background: #123d65;
+}
+
+header .categories > * {
+	color: white;
+	text-align: center;
+	padding: 10px;
+	margin: auto 0;
+	height: 80%;
+
+	flex-grow: 1;
+}
+
+header .categories > *:not(:first-child) {
+	border-left: solid 1px white;
 }
 
 footer {

@@ -20,13 +20,20 @@ class ProductReviewApi {
 			}
 		};
 
-		let request = {
-			method: "POST",
-			headers: { "Accept": "apllication/json", "Content-Type": "application/json" },
-			body: JSON.stringify(obj)
-		};
+		let request = { method: "POST", headers: { "Accept": "application/json", "Content-Type": "application/json" }, body: JSON.stringify(obj) };
 
 		let response = await fetch(Config.dbUrl + "/api/product-reviews", request);
+	}
+
+	static async getReviews(productID) {
+
+		let url = Config.dbUrl + "/api/products/" + productID + "?populate=*";
+		let request = { method: "GET", headers: { "Accept": "application/json", "Content-Type": "application/json" } };
+
+		let response = await fetch(url, request);
+		let json = await response.json();
+
+		return json.data.attributes.product_reviews;
 	}
 }
 

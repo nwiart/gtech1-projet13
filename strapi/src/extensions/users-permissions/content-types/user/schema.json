@@ -63,11 +63,9 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "account": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::account.account",
-      "inversedBy": "user"
+    "account_id": {
+      "type": "biginteger",
+      "required": true
     }
   }
 }

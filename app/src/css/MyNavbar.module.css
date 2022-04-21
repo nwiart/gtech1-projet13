@@ -1,0 +1,14 @@
+.navbar {
+	z-index: 50000;
+	display: block;
+	height: 100%;
+	align-items: center;
+}
+
+/*not working for no reason*/
+.navbar * {
+	z-index: 50;
+	margin: 24px 16px;
+	margin-top: auto;
+	margin-bottom: auto;
+}

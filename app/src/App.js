@@ -15,6 +15,7 @@ import Product from './pages/Product';
 import Payment from './pages/Payment';
 import Footer from './components/Footer';
 import Header from './components/Header';
+import Artisan from './pages/Artisan';
 
 
 
@@ -30,12 +31,12 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
-		if (localStorage.getItem("user") !== "undefined") {
-			this.setState({ user: JSON.parse(localStorage.getItem("user")) });
-		}
+		if (localStorage.getItem("user") != "undefined") this.setState({ user: JSON.parse(localStorage.getItem("user")) });
+		if (localStorage.getItem("cart") != null) this.setState({ cart: JSON.parse(localStorage.getItem("cart")) });
 
 		window.onbeforeunload = () => {
 			localStorage.setItem("user", this.state.user === undefined ? "undefined" : JSON.stringify(this.state.user));
+			localStorage.setItem("cart", JSON.stringify(this.state.cart));
 		};
 	}
 
@@ -51,14 +52,15 @@ class App extends React.Component {
 	render() {
 		return (
 			<>
-				<Header />
-
 				<Router>
+					<Header user={this.state.user} signOut={() => this.signOut()} />
+
 					<Routes>
 						<Route exact path="/" element={<Home />} />
 						<Route exact path="/connect" element={<Connect setUserSignedIn={(user) => this.setUserSignedIn(user)} />} />
 
 						<Route exact path="/product" element={<Product user={this.state.user} />} />
+						<Route exact path="/artisan" element={<Artisan />} />
 
 						<Route exact path="/payment" element={<Payment cart={this.state.cart} />} />
 					</Routes>
