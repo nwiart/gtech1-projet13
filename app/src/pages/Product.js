@@ -12,7 +12,7 @@ import { withRouter } from "../withRouter";
 import ProductReviewApi from "../api/ProductReviewApi";
 import ProductReview from "../components/ProductReview";
 import Rating from "../components/Rating";
-
+import image_footer from "../images/ImageFooter.png";
 
 class Product extends React.Component {
 
@@ -280,6 +280,9 @@ class Product extends React.Component {
 					</Toast.Header>
 					<Toast.Body>Votre avis a été posté.</Toast.Body>
 				</Toast>
+				<div className="end_page">
+					<img src={image_footer} width="100%"/>
+				</div>
 			</>
 		)
 	}

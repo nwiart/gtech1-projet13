@@ -1,11 +1,13 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-import { Col, Container, Row } from "react-bootstrap";
+import { CarouselItem, Col, Container, Row } from "react-bootstrap";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Carousel from 'react-bootstrap/Carousel';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
+import ProductCard from "../components/ProductCard";
+
 
 import calquelogo from "../images/CalqueLogo.png";
 import ligne from "../images/Ligne22.png";
@@ -25,29 +27,6 @@ import background_top from '../img/product_background_top.png';
 import background_bottom from '../img/product_background_bottom.png';
 
 import Config from "../api/Config";
-import ProductCard from "../components/ProductCard";
-
-
-const responsive = {
-    0: { items: 1 },
-    568: { items: 2 },
-    1024: { items: 3 },
-};
-
-const items = [
-    <div className="item" data-value="boulanger1">1</div>,
-    <div className="item" data-value="boulanger2">2</div>,
-    <div className="item" data-value="boulanger3">3</div>,
-];
-
-const Alice = () => (
-    <AliceCarousel
-        mouseTracking
-        items={items}
-        responsive={responsive}
-        controlsStrategy="alternate"
-    />
-);
 
 class Home extends React.Component {
 
@@ -79,6 +58,7 @@ class Home extends React.Component {
 		return (
 			<>
 			<Container style={{ background: "white", minHeight: "100vh" }}>
+				<p style={{color: "white"}}>ester-egg</p>
 				<div className="container">
 					<div className="text-center">
 						<div className="logoTitre">
@@ -113,7 +93,7 @@ class Home extends React.Component {
 								<h2>Découvrez les produit de nos régions</h2>
 							</div>
 							<img src={carte} width="572" style={{dispaly: "block"}}/>
-							
+							<br/>
 							<img src={ligne}/>
 						</div>
 						</div>
@@ -126,7 +106,11 @@ class Home extends React.Component {
 
 				<Container>
 						<div>
-							<h3 className="text-white">Nos recommandations produits</h3>
+							<div style={{ display: 'block', padding: 30, textAlign: "center"}}>
+								<h3 className="text-center" style={{color: "white", fontStyle: "italic"}}>Nos recommandations produits</h3>
+								<br/>
+								<img src={ligne_blanche}/>
+							</div>
 						</div>
 						
 						<div className="d-flex justify-content-between">
@@ -138,28 +122,47 @@ class Home extends React.Component {
 						</div>
 				</Container>
 
-					<Container style={{ padding: "0" }}>
-					<img src={background_bottom} width="100%" />
-				</Container>
-					
-				<Container style={{ padding: "0" }}>
-					<img src={background_top} width="100%" />
-				</Container>
-				<Container>
-						<div>
-							<h3>Nos recommandations artisans</h3>
-						</div>
-						<Container style={{ background: "white", padding: "12px" }}>
-							<Col xs={6}>
-
-								<img className="img-fluid" src={boulanger} />
-								<AliceCarousel mouseTracking items={items} />
-							</Col>
-						</Container>
-				</Container>
 
 				
 
+				<div className="recommandation">
+					<div className="text-center">
+						<div style={{ display: 'block', padding: 30, textAlign: "center"}}>
+							<h3 style={{color: "white", fontStyle: "italic"}}>Nos recommandations artisans</h3>
+							<br/>
+							<img src={ligne_blanche}/>
+						</div>
+						<div className="CardBackground">
+							<Container>
+								<Row>
+									<Col xs={6}>
+														
+											<img className="img-fluid" src={boulanger}/>
+											<br/>
+											<br/>
+											<button style={{textAlign: "center", background: "dark_blue", color: "#123d65" }}><Link to={"/artisan?id=2"} style={{color: "white"}}>Voir la page de cet artisan</Link></button>
+									</Col>
+									<Col xs={6} className="d-flex">
+										<Carousel>
+											<Carousel.Item>
+												<img src={boulanger1} />
+											</Carousel.Item>
+											<Carousel.Item>
+												<img src={boulanger2} />
+											</Carousel.Item>
+											<Carousel.Item>
+												<img src={boulanger3} />
+											</Carousel.Item>
+										</Carousel>
+									</Col>
+								</Row>
+							</Container>	
+						</div>
+					</div>
+				</div>
+				<Container style={{ padding: "0" }}>
+					<img src={background_bottom} width="100%" />	
+				</Container>
 				<div className="end_page">
 					<img src={image_footer} width="100%"/>
 				</div>

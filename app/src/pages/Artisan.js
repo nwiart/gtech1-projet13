@@ -36,7 +36,7 @@ async componentDidMount(){
 		return (
 			<>
 				<Container style={{background: "white"}}>
-					<h2>Nom de la boutique</h2>
+					<h2>{this.state.artisan.shop.data.attributes.name}</h2>
 					<Rating rating="8" />
 
 					<Container>
