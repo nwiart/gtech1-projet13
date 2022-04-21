@@ -84,11 +84,22 @@ button {
 	        user-select: none;
 }
 
+.second_background {
+	background: #e78c8c;
+	font-family: "Segoe UI";
+	font-weight: 100;
+
+	height: 100%;
+}
+
 .logoTitre{
 	margin-top: 80px;
-
 }
 
 .blue {
 	color: #123d65;
+}
+
+.carouselle {
+	margin-left: 22%;
 }
