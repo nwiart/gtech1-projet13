@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "filtres",
+  "info": {
+    "singularName": "filtre",
+    "pluralName": "filtres",
+    "displayName": "filtres"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product"
+    },
+    "Name": {
+      "type": "string"
+    }
+  }
+}
